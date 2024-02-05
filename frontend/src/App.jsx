@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 
 import theme from '@/theme';
 import AuthProvider from '@/providers/AuthProvider';
-import store from '@/slices/index.js';
+import store from '@/redux/store.js';
 
 import { Login, Home, Page404, Registration } from '@/pages';
 

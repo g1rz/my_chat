@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-import { setCurrentChannelId } from '@/slices/chatSlice';
+import { setCurrentChannelId } from '@/redux/slices/chatSlice';
 
 const Channels = () => {
 	const channels = useSelector((state) => state.chat.channels);

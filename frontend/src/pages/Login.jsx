@@ -15,12 +15,18 @@ import api from '@/api/routes';
 import React from 'react';
 import AuthContext from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import {useUserLoginMutation} from "@/services/auth/userApi.js";
 
 const Login = () => {
 	const [isInvalid, setIsInvalid] = React.useState(false);
 	const [isSuccessAuth, setIsSuccessAuth] = React.useState(false);
 	const { logIn, logOut } = React.useContext(AuthContext);
 	const navigate = useNavigate();
+
+	const [
+		userLogin, // This is the mutation trigger
+		result, // This is the destructured mutation result
+	] = useUserLoginMutation();
 
 	const schema = yup.object().shape({
 		email: yup
@@ -43,35 +49,47 @@ const Login = () => {
 		resolver: yupResolver(schema),
 	});
 
-	const onSubmitHandler = (data) => {
+	const onSubmitHandler = async (data) => {
 		reset();
 		const sendData = {
 			email: data.email,
 			password: data.password,
 		};
-		fetch(api.loginPath(), {
-			method: 'post',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-			},
-			body: JSON.stringify(sendData),
-		})
-			.then((response) => response.json())
-			.then((json) => {
-				console.log(json);
-				if (json.statusCode === 400) {
-					setIsInvalid(true);
-					logOut();
-				} else {
-					setIsInvalid(false);
-					setIsSuccessAuth(true);
-					localStorage.setItem('token', json.token);
-					logIn();
-					setTimeout(() => {
-						navigate('/');
-					}, 1000);
-				}
-			});
+
+		userLogin(sendData).unwrap()
+			.then(fulfilled => {
+				console.log(fulfilled)
+			})
+			.catch(rejected => {
+				console.error(rejected);
+				setIsInvalid(true);
+			})
+
+
+
+		// fetch(api.loginPath(), {
+		// 	method: 'post',
+		// 	headers: {
+		// 		'Content-Type': 'application/json;charset=utf-8',
+		// 	},
+		// 	body: JSON.stringify(sendData),
+		// })
+		// 	.then((response) => response.json())
+		// 	.then((json) => {
+		// 		console.log(json);
+		// 		if (json.statusCode === 400) {
+		// 			setIsInvalid(true);
+		// 			logOut();
+		// 		} else {
+		// 			setIsInvalid(false);
+		// 			setIsSuccessAuth(true);
+		// 			localStorage.setItem('token', json.token);
+		// 			logIn();
+		// 			setTimeout(() => {
+		// 				navigate('/');
+		// 			}, 1000);
+		// 		}
+		// 	});
 	};
 
 	return (

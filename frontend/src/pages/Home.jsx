@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Card, Grid } from '@mui/material';
 
 import { Layout } from '@/components/Layout/Layout';
@@ -14,8 +14,14 @@ import {
 } from '@/redux/slices/chatSlice.js';
 
 import {useAuth} from "@/hooks/useAuth.js";
+import {useUsersQuery} from "@/redux/api/usersApi.js";
 
-const Home = () => {;
+const Home = () => {
+	const { data: users } = useUsersQuery();
+
+	useEffect(() => {
+		console.log(users)
+	}, [users]);
 
 
 	return (

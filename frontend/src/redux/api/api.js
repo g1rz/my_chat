@@ -5,7 +5,17 @@ import {apiEndpoints} from '@/api/routes.js';
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: apiEndpoints.baseApiPath()
+        baseUrl: apiEndpoints.baseApiPath(),
+        credentials: "include",
+        prepareHeaders: (headers, { getState }) => {
+            const { token } = getState().user
+            console.log(getState())
+            if (token) {
+                headers.set('Authorization', `Bearer ${token}`)
+            }
+
+            return headers
+        },
     }),
     tagTypes: ["User"],
     endpoints: () => ({}),

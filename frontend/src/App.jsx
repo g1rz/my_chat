@@ -28,7 +28,7 @@ import {useRefreshTokenMutation} from "@/redux/api/authApi.js";
 		}
 		refreshToken().unwrap()
 			.then(data => {
-				dispatch(setUser(data));
+				// dispatch(setUser(data));
 			})
 			.catch(error => {
 				console.log(error);

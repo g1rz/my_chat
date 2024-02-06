@@ -12,22 +12,15 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import AuthContext from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {useRegistrationMutation} from "@/redux/api/authApi.js";
-import {useDispatch} from "react-redux";
-import {setUser} from "@/redux/slices/userSlice.js";
 
 const Registration = () => {
 	const [error, setError] = React.useState('');
 	const [isSuccess, setIsSuccess] = React.useState(false);
-	const { logIn } = React.useContext(AuthContext);
+
 	const navigate = useNavigate();
-	const [
-		registration,
-		result
-	] = useRegistrationMutation();
-	const dispatch = useDispatch();
+	const [registration] = useRegistrationMutation();
 
 	const schema = yup.object().shape({
 		email: yup
@@ -64,8 +57,8 @@ const Registration = () => {
 		console.log(sendData);
 
 		try {
-			const userData = await registration(sendData).unwrap();
-			dispatch(setUser(userData));
+			await registration(sendData).unwrap();
+			setIsSuccess(true);
 			navigate('/');
 		} catch (error) {
 			console.error(error);

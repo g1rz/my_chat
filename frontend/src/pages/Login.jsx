@@ -55,11 +55,11 @@ const Login = () => {
 		};
 
 		try {
-			const userData = await login(sendData).unwrap()
+			await login(sendData).unwrap()
 
 			setIsSuccessAuth(true);
 			setIsInvalid(false);
-			dispatch(setUser(userData));
+
 			setTimeout(() => {
 				navigate('/');
 			}, 1000);

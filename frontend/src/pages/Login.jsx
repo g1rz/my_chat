@@ -1,4 +1,9 @@
-import { Layout } from '@/components/Layout/Layout';
+import React, {useEffect} from 'react';
+import {useDispatch} from "react-redux";
+import { useNavigate, Link } from 'react-router-dom';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
 	Card,
 	CardContent,
@@ -7,26 +12,19 @@ import {
 	Button,
 	Alert,
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Link } from 'react-router-dom';
-import api from '@/api/routes';
-import React from 'react';
-import AuthContext from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import {useUserLoginMutation} from "@/services/auth/userApi.js";
+
+import {useLoginMutation} from "@/redux/api/auth/userApi.js";
+import {setUser} from "@/redux/slices/userSlice.js";
+
+import { Layout } from '@/components/Layout/Layout';
 
 const Login = () => {
 	const [isInvalid, setIsInvalid] = React.useState(false);
 	const [isSuccessAuth, setIsSuccessAuth] = React.useState(false);
-	const { logIn, logOut } = React.useContext(AuthContext);
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-	const [
-		userLogin, // This is the mutation trigger
-		result, // This is the destructured mutation result
-	] = useUserLoginMutation();
+	const [login] = useLoginMutation();
 
 	const schema = yup.object().shape({
 		email: yup
@@ -56,41 +54,25 @@ const Login = () => {
 			password: data.password,
 		};
 
-		userLogin(sendData).unwrap()
-			.then(fulfilled => {
-				console.log(fulfilled)
-			})
-			.catch(rejected => {
-				console.error(rejected);
-				setIsInvalid(true);
-			})
+		try {
+			const userData = await login(sendData).unwrap()
 
-
-
-		// fetch(api.loginPath(), {
-		// 	method: 'post',
-		// 	headers: {
-		// 		'Content-Type': 'application/json;charset=utf-8',
-		// 	},
-		// 	body: JSON.stringify(sendData),
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((json) => {
-		// 		console.log(json);
-		// 		if (json.statusCode === 400) {
-		// 			setIsInvalid(true);
-		// 			logOut();
-		// 		} else {
-		// 			setIsInvalid(false);
-		// 			setIsSuccessAuth(true);
-		// 			localStorage.setItem('token', json.token);
-		// 			logIn();
-		// 			setTimeout(() => {
-		// 				navigate('/');
-		// 			}, 1000);
-		// 		}
-		// 	});
+			setIsSuccessAuth(true);
+			setIsInvalid(false);
+			dispatch(setUser(userData));
+			setTimeout(() => {
+				navigate('/');
+			}, 1000);
+		} catch (error) {
+			console.log(error)
+			setIsInvalid(true);
+		}
 	};
+
+	useEffect(() => {
+
+	}, []);
+
 
 	return (
 		<Layout>

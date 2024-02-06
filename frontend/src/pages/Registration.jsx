@@ -15,12 +15,20 @@ import api from '@/api/routes';
 import React from 'react';
 import AuthContext from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import {useRegistrationMutation} from "@/redux/api/auth/userApi.js";
+import {useDispatch} from "react-redux";
+import {setUser} from "@/redux/slices/userSlice.js";
 
 const Registration = () => {
 	const [error, setError] = React.useState('');
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const { logIn } = React.useContext(AuthContext);
 	const navigate = useNavigate();
+	const [
+		registration,
+		result
+	] = useRegistrationMutation();
+	const dispatch = useDispatch();
 
 	const schema = yup.object().shape({
 		email: yup
@@ -48,34 +56,22 @@ const Registration = () => {
 		resolver: yupResolver(schema),
 	});
 
-	const onSubmitHandler = (data) => {
+	const onSubmitHandler = async (data) => {
 		reset();
 		const sendData = {
 			email: data.email,
 			password: data.password,
 		};
 		console.log(sendData);
-		fetch(api.registrationPath(), {
-			method: 'post',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-			},
-			body: JSON.stringify(sendData),
-		})
-			.then((response) => response.json())
-			.then((json) => {
-				console.log(json);
-				if (json.statusCode && json.statusCode !== 200) {
-					setError(json.message);
-				} else {
-					setIsSuccess(true);
-					localStorage.setItem('token', json.token);
-					logIn();
-					setTimeout(() => {
-						navigate('/');
-					}, 1000);
-				}
-			});
+
+		try {
+			const userData = await registration(sendData).unwrap();
+			dispatch(setUser(userData));
+			navigate('/');
+		} catch (error) {
+			console.error(error);
+			setError(error.data.message);
+		}
 	};
 
 	return (

@@ -1,12 +1,33 @@
-import React from 'react';
-
 import { Box, Container, Typography, Grid, Button } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {useDispatch} from "react-redux";
 
-import AuthContext from '@/contexts/AuthContext';
+import {useAuth} from "@/hooks/useAuth.js";
+import {removeUser} from "@/redux/slices/userSlice.js";
+import {useLogoutMutation} from "@/redux/api/auth/userApi.js";
+
 
 const Header = () => {
-	const { isAuth, logOut } = React.useContext(AuthContext);
+	const { isAuth } = useAuth();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const [logout] = useLogoutMutation();
+
+	const handleLogout = async () => {
+		try {
+			const userData = await logout().unwrap()
+
+			console.log(userData);
+
+			dispatch(removeUser());
+			setTimeout(() => {
+				navigate('/login');
+			}, 1000);
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	return (
 		<Box component="header" className="header" sx={{ boxShadow: 1 }}>
@@ -34,7 +55,7 @@ const Header = () => {
 						{isAuth && (
 							<Button
 								variant="contained"
-								onClick={() => logOut()}
+								onClick={() => handleLogout()}
 							>
 								Выйти
 							</Button>

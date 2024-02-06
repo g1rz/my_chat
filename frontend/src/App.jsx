@@ -1,19 +1,50 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { ThemeProvider } from '@mui/material';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import {createBrowserRouter, RouterProvider, useNavigate} from 'react-router-dom';
+import {Provider, useDispatch} from 'react-redux';
 
 import theme from '@/theme';
 import AuthProvider from '@/providers/AuthProvider';
 import {store} from '@/redux/store.js';
 
 import { Login, Home, Page404, Registration } from '@/pages';
+import {useAuth} from "@/hooks/useAuth.js";
+import {setUser} from "@/redux/slices/userSlice.js";
+import {useRefreshTokenMutation} from "@/redux/api/auth/userApi.js";
+
+ function RequireAuth ({children}) {
+	const {isAuth} = useAuth();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const [
+		refreshToken,
+		result,
+	] = useRefreshTokenMutation();
+
+
+	useEffect( () => {
+		if (isAuth) {
+			return;
+		}
+		refreshToken().unwrap()
+			.then(data => {
+				dispatch(setUser(data));
+			})
+			.catch(error => {
+				console.log(error);
+				navigate('/login');
+			});
+
+	}, [isAuth]);
+
+	return children;
+}
 
 const App = () => {
 	const router = createBrowserRouter([
 		{
 			path: '/',
-			element: <Home />,
+			element: (<RequireAuth><Home /></RequireAuth>),
 			errorElement: <Page404 />,
 		},
 		{

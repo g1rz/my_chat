@@ -1,6 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Card, Grid } from '@mui/material';
 
 import { Layout } from '@/components/Layout/Layout';
@@ -15,13 +13,9 @@ import {
 	setCurrentChannelId,
 } from '@/redux/slices/chatSlice.js';
 
-import api from '@/api/routes';
 import {useAuth} from "@/hooks/useAuth.js";
 
-const Home = () => {
-	const { isAuth } = useAuth();
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
+const Home = () => {;
 
 
 	return (

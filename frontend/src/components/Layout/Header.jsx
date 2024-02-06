@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 
 import {useAuth} from "@/hooks/useAuth.js";
 import {removeUser} from "@/redux/slices/userSlice.js";
-import {useLogoutMutation} from "@/redux/api/auth/userApi.js";
+import {useLogoutMutation} from "@/redux/api/authApi.js";
 
 
 const Header = () => {

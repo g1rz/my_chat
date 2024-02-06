@@ -11,11 +11,10 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
-import api from '@/api/routes';
 import React from 'react';
 import AuthContext from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import {useRegistrationMutation} from "@/redux/api/auth/userApi.js";
+import {useRegistrationMutation} from "@/redux/api/authApi.js";
 import {useDispatch} from "react-redux";
 import {setUser} from "@/redux/slices/userSlice.js";
 

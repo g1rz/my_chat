@@ -1,14 +1,8 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import api from '@/api/routes.js';
+import {api} from './api.js';
 import {userDto} from "@/redux/dto/userDto.js";
 
 // Define a service using a base URL and expected endpoints
-export const userApi = createApi({
-        reducerPath: 'userApi',
-        baseQuery: fetchBaseQuery({
-            baseUrl: api.baseApiPath()
-        }),
-        tagTypes: ["User"],
+export const authApi = api.injectEndpoints({
         endpoints: (builder) => ({
             login: builder.mutation({
                 query: (body) => ({
@@ -46,4 +40,4 @@ export const userApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useLogoutMutation, useRegistrationMutation, useRefreshTokenMutation } = userApi;
+export const { useLoginMutation, useLogoutMutation, useRegistrationMutation, useRefreshTokenMutation } = authApi;

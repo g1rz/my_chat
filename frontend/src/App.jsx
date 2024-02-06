@@ -10,7 +10,7 @@ import {store} from '@/redux/store.js';
 import { Login, Home, Page404, Registration } from '@/pages';
 import {useAuth} from "@/hooks/useAuth.js";
 import {setUser} from "@/redux/slices/userSlice.js";
-import {useRefreshTokenMutation} from "@/redux/api/auth/userApi.js";
+import {useRefreshTokenMutation} from "@/redux/api/authApi.js";
 
  function RequireAuth ({children}) {
 	const {isAuth} = useAuth();

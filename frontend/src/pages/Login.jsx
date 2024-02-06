@@ -13,7 +13,7 @@ import {
 	Alert,
 } from '@mui/material';
 
-import {useLoginMutation} from "@/redux/api/auth/userApi.js";
+import {useLoginMutation} from "@/redux/api/authApi.js";
 import {setUser} from "@/redux/slices/userSlice.js";
 
 import { Layout } from '@/components/Layout/Layout';

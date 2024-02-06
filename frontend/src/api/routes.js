@@ -1,6 +1,6 @@
 const apiPath = '/api';
 
-export default {
+export const apiEndpoints = {
 	baseApiPath: () => apiPath,
 	loginPath: () => [apiPath, 'login'].join('/'),
 	registrationPath: () => [apiPath, 'registration'].join('/'),

@@ -26,10 +26,8 @@ import {useRefreshTokenMutation} from "@/redux/api/authApi.js";
 		if (isAuth) {
 			return;
 		}
+		console.log(isAuth)
 		refreshToken().unwrap()
-			.then(data => {
-				// dispatch(setUser(data));
-			})
 			.catch(error => {
 				console.log(error);
 				navigate('/login');

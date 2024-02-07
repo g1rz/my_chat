@@ -1,11 +1,9 @@
-import React, {useEffect} from 'react';
-import { Card, Grid } from '@mui/material';
+import {useEffect} from 'react';
+import {Card, Grid} from '@mui/material';
 
 import { Layout } from '@/components/Layout/Layout';
 import Channels from '@/components/Channels';
 import Messages from '@/components/Messages';
-
-import AuthContext from '@/contexts/AuthContext';
 
 import {
 	setChannels,
@@ -17,15 +15,19 @@ import {useAuth} from "@/hooks/useAuth.js";
 import {useUsersQuery} from "@/redux/api/usersApi.js";
 
 const Home = () => {
-	const { data: users } = useUsersQuery();
+	const {isAuth} = useAuth();
+
+	const { data: users } = useUsersQuery(undefined, {
+		skip: !isAuth
+	});
 
 	useEffect(() => {
 		console.log(users)
 	}, [users]);
 
-
 	return (
 		<Layout>
+
 			<Card sx={{ marginTop: '50px', minHeight: '80%', height: '1px' }}>
 				<Grid container sx={{ height: '100%' }}>
 					<Grid item xs={3}>

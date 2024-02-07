@@ -20,7 +20,7 @@ const Home = () => {
 	const { data: users } = useUsersQuery(undefined, {
 		skip: !isAuth
 	});
-	const [trigger, result, lastPromiseInfo] = useLazyUsersQuery();
+	const [trigger, result] = useLazyUsersQuery();
 
 	useEffect(() => {
 		// console.log(result);

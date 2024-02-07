@@ -11,6 +11,7 @@ import { Login, Home, Page404, Registration } from '@/pages';
 import {useAuth} from "@/hooks/useAuth.js";
 import {setUser} from "@/redux/slices/userSlice.js";
 import {useRefreshTokenMutation} from "@/redux/api/authApi.js";
+import {apiEndpoints} from "@/consts/apiEndpoints.js";
 
  function RequireAuth ({children}) {
 	const {isAuth} = useAuth();
@@ -26,11 +27,11 @@ import {useRefreshTokenMutation} from "@/redux/api/authApi.js";
 		if (isAuth) {
 			return;
 		}
-		console.log('isAuth', isAuth)
+
 		refreshToken().unwrap()
 			.catch(error => {
 				console.log(error);
-				navigate('/login');
+				navigate(apiEndpoints.loginPath());
 			});
 
 	}, [isAuth]);

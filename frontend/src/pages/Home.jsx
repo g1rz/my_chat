@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {Card, Grid} from '@mui/material';
+import {Button, Card, Grid} from '@mui/material';
 
 import { Layout } from '@/components/Layout/Layout';
 import Channels from '@/components/Channels';
@@ -12,7 +12,7 @@ import {
 } from '@/redux/slices/chatSlice.js';
 
 import {useAuth} from "@/hooks/useAuth.js";
-import {useUsersQuery} from "@/redux/api/usersApi.js";
+import {useLazyUsersQuery, useUsersQuery} from "@/redux/api/usersApi.js";
 
 const Home = () => {
 	const {isAuth} = useAuth();
@@ -20,14 +20,15 @@ const Home = () => {
 	const { data: users } = useUsersQuery(undefined, {
 		skip: !isAuth
 	});
+	const [trigger, result, lastPromiseInfo] = useLazyUsersQuery();
 
 	useEffect(() => {
-		console.log(users)
-	}, [users]);
+		// console.log(result);
+	}, [result]);
 
 	return (
 		<Layout>
-
+			<Button onClick={() => trigger(1)}>click</Button>
 			<Card sx={{ marginTop: '50px', minHeight: '80%', height: '1px' }}>
 				<Grid container sx={{ height: '100%' }}>
 					<Grid item xs={3}>

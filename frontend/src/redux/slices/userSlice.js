@@ -37,7 +37,6 @@ const userSLice = createSlice({
                 state.userId = payload.userId;
                 state.token = payload.token;
                 state.isActivated = payload.isActivated;
-                console.log(payload, 'dasdad')
             }
         );
         builder.addMatcher(

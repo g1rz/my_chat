@@ -26,7 +26,7 @@ import {useRefreshTokenMutation} from "@/redux/api/authApi.js";
 		if (isAuth) {
 			return;
 		}
-		console.log(isAuth)
+		console.log('isAuth', isAuth)
 		refreshToken().unwrap()
 			.catch(error => {
 				console.log(error);

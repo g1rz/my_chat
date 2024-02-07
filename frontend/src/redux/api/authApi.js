@@ -1,11 +1,12 @@
 import {api} from './api.js';
 import {userDto} from "@/redux/dto/userDto.js";
+import {apiEndpoints} from "@/consts/apiEndpoints.js";
 
 export const authApi = api.injectEndpoints({
         endpoints: (builder) => ({
             login: builder.mutation({
                 query: (body) => ({
-                    url: `/login`,
+                    url: apiEndpoints.loginPath(),
                     method: 'POST',
                     body,
                 }),
@@ -13,13 +14,13 @@ export const authApi = api.injectEndpoints({
             }),
             logout: builder.mutation({
                 query: () => ({
-                    url: `/logout`,
+                    url: apiEndpoints.logoutPath(),
                     method: 'POST',
                 }),
             }),
             registration: builder.mutation({
                 query: (body) => ({
-                    url: '/registration',
+                    url: apiEndpoints.registrationPath(),
                     method: 'POST',
                     body,
                 }),
@@ -27,7 +28,7 @@ export const authApi = api.injectEndpoints({
             }),
             refreshToken: builder.mutation({
                 query: () => ({
-                    url: '/refresh',
+                    url: apiEndpoints.refreshPath(),
                     method: 'GET',
                 }),
                 transformResponse: (response) => userDto(response),

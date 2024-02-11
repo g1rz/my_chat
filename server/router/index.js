@@ -15,10 +15,10 @@ router.post('/logout', userController.logout);
 router.get('/activate/:link', userController.activate);
 router.get('/refresh', userController.refresh);
 router.get('/users', authMiddleware, userController.users);
-router.get('/channels', authMiddleware, channelController.channels());
+router.get('/channels', authMiddleware, channelController.channels);
 router.post('/channels/add',
 	authMiddleware,
 	body('title').isLength({min: 3, max: 32}),
-	channelController.addChannel());
+	channelController.addChannel);
 
 export default router;

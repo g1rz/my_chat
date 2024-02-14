@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -12,18 +12,28 @@ import {
 	ListItem,
 	ListItemText,
 	ListItemButton,
-	Skeleton,
+	Skeleton, Modal,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import { setCurrentChannelId } from '@/redux/slices/chatSlice';
 
 const Channels = () => {
+	const [isShowModal, setIsShowModal] = useState(false);
+
 	const channels = useSelector((state) => state.chat.channels);
 	const currentChannelId = useSelector(
 		(state) => state.chat.currentChannelId
 	);
 	const dispatch = useDispatch();
+
+	const handleClose = () => {
+		setIsShowModal(false);
+	}
+
+	const handleOpen = () => {
+		setIsShowModal(true);
+	}
 
 	return (
 		<Box sx={{ boxShadow: 1, height: '100%' }}>
@@ -37,9 +47,28 @@ const Channels = () => {
 				}}
 			>
 				<Typography variant="h3">Каналы</Typography>
-				<IconButton>
+				<IconButton onClick={handleOpen}>
 					<AddIcon />
 				</IconButton>
+				<Modal
+					open={isShowModal}
+					onClose={handleClose}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={{
+						margin: '0 auto',
+						maxWidth: '400px',
+						background: '#fff',
+					}}>
+						<Typography id="modal-modal-title" variant="h6" component="h2">
+							Text in a modal
+						</Typography>
+						<Typography id="modal-modal-description" sx={{ mt: 2 }}>
+							Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+						</Typography>
+					</Box>
+				</Modal>
 			</Grid>
 			<Box sx={{ padding: '10px' }}>
 				<List>
@@ -60,7 +89,7 @@ const Channels = () => {
 										<ListItemText primary={channel.name} />
 									</ListItemButton>
 								</ListItem>
-						  ))
+						))
 						: [...Array(2)].map((_, index) => (
 								<ListItem
 									disablePadding

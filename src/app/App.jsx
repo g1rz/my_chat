@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material';
 import {createBrowserRouter, RouterProvider, useNavigate} from 'react-router-dom';
 import {Provider, useDispatch} from 'react-redux';
 
-import theme from '@/theme';
+import theme from './theme';
 import AuthProvider from '@/providers/AuthProvider';
 import {store} from '@/redux/store.js';
 
@@ -13,7 +13,7 @@ import {setUser} from "@/redux/slices/userSlice.js";
 import {useRefreshTokenMutation} from "@/redux/api/authApi.js";
 import {apiEndpoints} from "@/consts/apiEndpoints.js";
 
- function RequireAuth ({children}) {
+function RequireAuth ({children}) {
 	const {isAuth} = useAuth();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();

@@ -1,5 +1,5 @@
-import {useEffect} from 'react';
-import {Button, Card, Grid} from '@mui/material';
+import { useEffect } from 'react';
+import { Button, Card, Grid } from '@mui/material';
 
 import { Layout } from '@/components/Layout/Layout';
 import Channels from '@/components/Channels';
@@ -11,14 +11,14 @@ import {
 	setCurrentChannelId,
 } from '@/redux/slices/chatSlice.js';
 
-import {useAuth} from "@/hooks/useAuth.js";
-import {useLazyUsersQuery, useUsersQuery} from "@/redux/api/usersApi.js";
+import { useAuth } from '@/hooks/useAuth.js';
+import { useLazyUsersQuery, useUsersQuery } from '@/redux/api/usersApi.js';
 
 const Home = () => {
-	const {isAuth} = useAuth();
+	const { isAuth } = useAuth();
 
 	const { data: users } = useUsersQuery(undefined, {
-		skip: !isAuth
+		skip: !isAuth,
 	});
 	const [trigger, result] = useLazyUsersQuery();
 
@@ -43,4 +43,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export { Home };
